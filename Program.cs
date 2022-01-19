@@ -15,7 +15,7 @@ class Program
         while (playAgain)
         {
             NewBoard(emptyBoard, board);
-            while (!IsWinner(board) || !IsTie(board))
+            while ((IsWinner(board) == false) && !IsTie(board))
             {
                 DisplayBoard(board);
                 PromptTurn(turn);
@@ -23,8 +23,8 @@ class Program
                  turn = GetNextTurn(turn);
             }
             DisplayBoard(board);
+            turn = GetNextTurn(turn);
             EndGame(board, turn, xWins, oWins);
-            DisplayWins(xWins, oWins);
             playAgain = PlayAgain();
         }
         
@@ -129,19 +129,20 @@ class Program
         } else{
             if (turn == "x")
             {
-                xWins += 1;
+                xWins = xWins + 1;
             } else
             {
-                oWins += 1;
+                oWins = oWins + 1;
             }
             Console.WriteLine($"{turn} won! Thanks for playing!");
         }
+        DisplayWins(xWins, oWins);
     }
 
     static void DisplayWins(int xWins, int oWins)
     {
-        Console.WriteLine($"X has won {xWins} times.");
-        Console.WriteLine($"O has won {oWins} times.");
+        Console.WriteLine($"x has won {xWins} times.");
+        Console.WriteLine($"o has won {oWins} times.");
 
         if (xWins > oWins)
         {
