@@ -20,8 +20,9 @@ class Program
                 DisplayBoard(board);
                 PromptTurn(turn);
                 TakeTurn(board, turn);
-                SwitchPlayers(turn);
+                 turn = GetNextTurn(turn);
             }
+            DisplayBoard(board);
             EndGame(board, turn, xWins, oWins);
             DisplayWins(xWins, oWins);
             playAgain = PlayAgain();
@@ -67,20 +68,21 @@ class Program
         
     }
 
-    static void SwitchPlayers(string turn)
+    static string GetNextTurn(string turn)
     {
-        if (turn == "x")
-        {
-            turn = "o";
-        } else if (turn == "o")
-        {
-            turn = "x";
-        }
+        string nextTurn = "x";
+
+            if (turn == "x")
+            {
+                nextTurn = "o";
+            }
+
+            return nextTurn;
     }
 
     static bool IsValdMove(int square, List<String> board)
     {
-        if ((board[square] == "x") || (board[square] == "o"))
+        if ((board[square-1] == "x") || (board[square-1] == "o"))
         {
             return false;
         } 
@@ -103,28 +105,37 @@ class Program
             return false;
         }
     }
-    static bool IsTie(List<String> board)
-    {
-        for (int i = 0; i < 9; i++)
+    static bool IsTie(List<string> board)
         {
-            if (board[i] != "x"|| board[i] != "o")
+            bool foundDigit = false;
+
+            foreach (string value in board)
             {
-                return false;
+                if (char.IsDigit(value[0]))
+                {
+                    foundDigit = true;
+                    break;
+                }
             }
+
+            return !foundDigit;
         }
-        return true;
-    }
 
     static void EndGame(List<String> board, string turn, int xWins, int oWins)
     {
-        if (turn == "x")
+        if (IsTie(board))
         {
-            xWins += 1;
-        } else
-        {
-            oWins += 1;
+            Console.WriteLine("Tie game! Thanks for playing!");
+        } else{
+            if (turn == "x")
+            {
+                xWins += 1;
+            } else
+            {
+                oWins += 1;
+            }
+            Console.WriteLine($"{turn} won! Thanks for playing!");
         }
-        Console.WriteLine($"{turn} won! Thanks for playing!");
     }
 
     static void DisplayWins(int xWins, int oWins)
